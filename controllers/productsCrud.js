@@ -31,17 +31,17 @@ const postProduct = async (req, res) => {
   
       // Upload the image to Cloudinary
       const photoUrl = await cloudinary.uploader.upload(image);
-  
+      console.log(req.body);
       // Create a new product document
       const newProduct = new Product({
-        name,
-        price,
-        description,
         category,
+        description,
+        name,
         featured,
+        price,
         tag,
-        discount,
         quantity,
+        discount,
         image: photoUrl.url, // Store the Cloudinary image URL in your product document
       });
   
@@ -52,7 +52,7 @@ const postProduct = async (req, res) => {
   
       res.status(201).json({ success: true, message: 'Product created successfully' });
     } catch (error) {
-      console.error(error);
+      console.error(error, "error ");
       res.status(500).json({ success: false, message: 'Unable to create a product, please try again' });
     }
   };
