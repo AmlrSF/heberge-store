@@ -56,30 +56,80 @@ const postProduct = async (req, res) => {
   };
 
 
-const deleteSingleProduct  = async (req,res)=>{
+
+  // Delete a single product by ID
+  const deleteSingleProduct = async (req, res) => {
     try {
-        
+      const productId = req.params.id; // Assuming the product ID is passed as a parameter
+  
+      // Use Mongoose to find and delete the product by its ID
+      const deletedProduct = await Product.findByIdAndDelete(productId);
+  
+      if (!deletedProduct) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+  
+      res.status(200).json({ success: true, message: 'Product deleted successfully' });
     } catch (error) {
-        
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Unable to delete the product, please try again' });
     }
-}
-
-
-const getSingleProduct  = async (req,res)=>{
+  }
+  
+  // Retrieve a single product by ID
+  const getSingleProduct = async (req, res) => {
     try {
-        
+      const productId = req.params.id; // Assuming the product ID is passed as a parameter
+  
+      // Use Mongoose to find the product by its ID
+      const product = await Product.findById(productId);
+  
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+  
+      res.status(200).json({ success: true, data: product });
     } catch (error) {
-        
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Unable to retrieve the product, please try again' });
     }
-}
-
-
-const UpdateSingleProduct  = async (req,res)=>{
+  }
+  
+  // Update a single product by ID
+  const updateSingleProduct = async (req, res) => {
     try {
-        
+      const productId = req.params.id; // Assuming the product ID is passed as a parameter
+      const updateData = req.body; // Assuming the updated data is in the request body
+  
+      // Use Mongoose to find and update the product by its ID
+      const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
+  
+      if (!updatedProduct) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+  
+      res.status(200).json({ success: true, data: updatedProduct });
     } catch (error) {
-        
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Unable to update the product, please try again' });
     }
+  }
+  
+// Delete all products
+const deleteAllProducts = async (req, res) => {
+  try {
+    // Use Mongoose to delete all products from the database
+    const deleteResult = await Product.deleteMany({});
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'No products found to delete' });
+    }
+
+    res.status(200).json({ success: true, message: 'All products deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Unable to delete all products, please try again' });
+  }
 }
 
 module.exports = {
@@ -87,5 +137,6 @@ module.exports = {
     postProduct,
     getSingleProduct,
     deleteSingleProduct,
-    UpdateSingleProduct
+    updateSingleProduct,
+    deleteAllProducts
 }

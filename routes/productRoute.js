@@ -6,14 +6,19 @@ const {
     postProduct,
     deleteSingleProduct,
     getSingleProduct,
-    UpdateSingleProduct
+    updateSingleProduct,
+    deleteAllProducts
 } = require('../controllers/productsCrud');
 
 router.route('/')
     .get(getAllProducts)
-    .post(postProduct);
+    .post(postProduct)
+    .delete(deleteAllProducts)
 
-
+router.route('/product/:id')
+    .delete(deleteSingleProduct)
+    .get(getSingleProduct)
+    .put(updateSingleProduct)
 
 
 module.exports = router
