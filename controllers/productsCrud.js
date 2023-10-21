@@ -27,7 +27,7 @@ const getAllProducts = async (req, res) => {
 //post a product
 const postProduct = async (req, res) => {
     try {
-      const { name, price, description, category, featured, tag, image } = req.body;
+      const { name, price, description, category, featured, tag, image,discount,quantity } = req.body;
   
       // Upload the image to Cloudinary
       const photoUrl = await cloudinary.uploader.upload(image);
@@ -40,6 +40,8 @@ const postProduct = async (req, res) => {
         category,
         featured,
         tag,
+        discount,
+        quantity,
         image: photoUrl.url, // Store the Cloudinary image URL in your product document
       });
   
