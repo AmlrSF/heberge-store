@@ -16,7 +16,7 @@ const getAllProducts = async (req, res) => {
   try {
     // Fetch all products from the database
     const products = await Product.find();
-
+    console.log(products);
     res.status(200).json({ success: true, data: products });
   } catch (error) {
     console.error(error);
@@ -31,7 +31,7 @@ const postProduct = async (req, res) => {
   
       // Upload the image to Cloudinary
       const photoUrl = await cloudinary.uploader.upload(image);
-      console.log(req.body);
+      
       // Create a new product document
       const newProduct = new Product({
         category,
@@ -102,10 +102,17 @@ const postProduct = async (req, res) => {
     try {
       const productId = req.params.id; // Assuming the product ID is passed as a parameter
       const updateData = req.body; // Assuming the updated data is in the request body
+
+      if(req.body.image){
+        const photoUrl = await cloudinary.uploader.upload(req.body.image);
+        req.body.image = photoUrl.url;
+      }
   
       // Use Mongoose to find and update the product by its ID
       const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
-  
+      
+      console.log(updatedProduct);
+
       if (!updatedProduct) {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
