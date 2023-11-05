@@ -23,6 +23,29 @@ const getOrders = async (req, res) => {
     res.status(500).json({ success: false, error: 'Error fetching orders' });
   }
 };
+
+const getOrdersByCustomer = async (req, res) => {
+  const customerId = req.params.id; // Assuming you pass the customer ID as a parameter
+
+  try {
+    const orders = await Order.find({ customer: customerId })
+      .populate({
+        path: 'customer',
+        model: Customer,
+        select: 'firstName lastName email profileImage',
+      })
+      .populate({
+        path: 'products.product',
+        model: Product,
+        select: 'name price quantity',
+      });
+
+    res.json({ success: true, orders });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+    res.status(500).json({ success: false, error: 'Error fetching orders' });
+  }
+};
 //getAllPosts
 const postOrders = async (req, res) => {
     try {
@@ -44,5 +67,6 @@ const postOrders = async (req, res) => {
 
 module.exports = {
     postOrders,
-    getOrders
+    getOrders,
+    getOrdersByCustomer
 }
