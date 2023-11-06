@@ -89,29 +89,24 @@ const DeleteOrderById = async (req, res) => {
 };
 
 const UpdateOrderById = async (req, res) => {
-  const orderId = req.params.id; 
-
-
-  const updatedData = {
-    status: true,
-  };
+  const orderId = req.params.id;
 
   try {
-    
+    const updatedData = req.body;
+
     const updatedOrder = await Order.findByIdAndUpdate(orderId, updatedData, { new: true });
 
     if (!updatedOrder) {
- 
       return res.status(404).json({ message: `Order with ID ${orderId} not found.` });
     }
 
     return res.status(200).json(updatedOrder);
   } catch (error) {
-
     console.error('Error updating order:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 module.exports = {
