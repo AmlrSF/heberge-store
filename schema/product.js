@@ -9,7 +9,7 @@ const productSchema = new Schema({
   image: String,
   price: String,
   tag: String,
-  quantity: String,
+  quantity: Number,
   discount: String,
   featured:Boolean,
   updateDate: {
