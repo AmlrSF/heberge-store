@@ -94,7 +94,12 @@ const UpdateOrderById = async (req, res) => {
   try {
     const updatedData = req.body;
 
-    const updatedOrder = await Order.findByIdAndUpdate(orderId, updatedData, { new: true });
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, updatedData, { new: true })
+    .populate({
+      path: 'products.product',
+      model: Product,
+      select: 'name quantity',
+    });
 
     if (!updatedOrder) {
       return res.status(404).json({ message: `Order with ID ${orderId} not found.` });
