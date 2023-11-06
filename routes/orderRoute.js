@@ -6,7 +6,8 @@ const {
     getOrders,
     getOrdersByCustomer,
     DeleteAllOrders,
-    DeleteOrderById
+    DeleteOrderById,
+    UpdateOrderById
 } = require('../controllers/ordersCrud');
 
 router.route('/')
@@ -16,7 +17,8 @@ router.route('/')
 
 router.route('/:id')
     .get(getOrdersByCustomer)
-    .delete(DeleteOrderById);
+    .delete(DeleteOrderById)
+    .put(UpdateOrderById);
 
 
 module.exports = router
