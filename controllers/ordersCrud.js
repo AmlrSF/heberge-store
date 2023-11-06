@@ -75,9 +75,8 @@ const DeleteAllOrders = async (req, res) => {
 
 const DeleteOrderById = async (req, res) => {
   const orderId = req.params.id; 
-
   try {
-    const order = await Order.findByIdAndRemove(id);
+    const order = await Order.findByIdAndRemove(orderId);
 
     if (order) {
       res.json({ message: 'Order deleted successfully' });
