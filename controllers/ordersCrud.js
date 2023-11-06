@@ -37,7 +37,7 @@ const getOrdersByCustomer = async (req, res) => {
       .populate({
         path: 'products.product',
         model: Product,
-        select: 'name price quantity',
+        select: 'name price quantity image',
       });
 
     res.json({ success: true, orders });
@@ -62,11 +62,39 @@ const postOrders = async (req, res) => {
       console.error('Error creating order:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  };
+};
+
+const DeleteAllOrders = async (req, res) => {
+  try {
+    await Order.deleteMany({}); //
+    res.status(204).json({ message: 'All orders deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting orders', error: error });
+  }
+};
+
+const DeleteOrderById = async (req, res) => {
+  const orderId = req.params.id; 
+
+  try {
+    const order = await Order.findByIdAndRemove(id);
+
+    if (order) {
+      res.json({ message: 'Order deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting order', error: error });
+  }
+};
+
 
 
 module.exports = {
     postOrders,
     getOrders,
-    getOrdersByCustomer
+    getOrdersByCustomer,
+    DeleteAllOrders,
+    DeleteOrderById
 }

@@ -32,6 +32,7 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: Boolean
 });
 
 const Order = mongoose.model('Order', orderSchema);
