@@ -11,6 +11,7 @@ const productSchema = new Schema({
   tag: String,
   quantity: String,
   discount: String,
+  featured:Boolean,
   updateDate: {
     type: Date,
     default: Date.now,
