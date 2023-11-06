@@ -66,8 +66,8 @@ const postOrders = async (req, res) => {
 
 const DeleteAllOrders = async (req, res) => {
   try {
-    await Order.deleteMany({}); //
-    res.status(204).json({ message: 'All orders deleted successfully' });
+    let order = await Order.deleteMany({}); //
+    res.status(204).json({ message: 'All orders deleted successfully',order:order });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting orders', error: error });
   }
@@ -81,7 +81,7 @@ const DeleteOrderById = async (req, res) => {
     if (order) {
       res.json({ message: 'Order deleted successfully' });
     } else {
-      res.status(404).json({ message: 'Order not found' });
+      res.status(404).json({ message: 'Order not found',order:order });
     }
   } catch (error) {
     res.status(500).json({ message: 'Error deleting order', error: error });
