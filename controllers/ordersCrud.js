@@ -66,22 +66,36 @@ const postOrders = async (req, res) => {
 
 const DeleteAllOrders = async (req, res) => {
   try {
-    let order = await Order.deleteMany({}); //
-    res.status(204).json({ message: 'All orders deleted successfully',order:order });
+    const deletedOrders = await Order.find({});
+
+    await Order.deleteMany({}).populate({
+      path: 'products.product',
+      model: Product,
+      select: 'name quantity',
+    });
+;
+  
+    res.status(200).json({ message: 'All orders deleted successfully', deletedOrders });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting orders', error: error });
+    res.status(500).json({ message: 'Error deleting orders', error });
   }
 };
+
 
 const DeleteOrderById = async (req, res) => {
   const orderId = req.params.id; 
   try {
-    const order = await Order.findByIdAndRemove(orderId);
+    const order = await Order.findByIdAndRemove(orderId)
+    .populate({
+      path: 'products.product',
+      model: Product,
+      select: 'name quantity',
+    });
 
     if (order) {
-      res.json({ message: 'Order deleted successfully' });
+      res.json({ message: 'Order deleted successfully' ,order:order});
     } else {
-      res.status(404).json({ message: 'Order not found',order:order });
+      res.status(404).json({ message: 'Order not found' });
     }
   } catch (error) {
     res.status(500).json({ message: 'Error deleting order', error: error });
