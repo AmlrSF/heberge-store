@@ -67,13 +67,13 @@ const postOrders = async (req, res) => {
 
 const DeleteAllOrders = async (req, res) => {
   try {
-    const deletedOrders = await Order.find({});
-
-    await Order.deleteMany({}).populate({
+    const deletedOrders = await Order.find({}).populate({
       path: 'products.product',
       model: Product,
       select: 'name quantity',
     });
+
+    await Order.deleteMany({})
 ;
   
     res.status(200).json({ message: 'All orders deleted successfully', deletedOrders });
