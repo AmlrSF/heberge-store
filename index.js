@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connectToMongoDb = require('./dbConnection/connect');
+
 const product = require('./routes/productRoute');
 const customer = require('./routes/customersRoute');
 const orders = require("./routes/orderRoute");
@@ -16,6 +17,8 @@ app.use('/api/v1/products',product);
 app.use('/api/v1/customers',customer);
 
 app.use('/api/v1/orders',orders);
+
+//get orders
 
 const runServerApplication = async()=>{
     try {
