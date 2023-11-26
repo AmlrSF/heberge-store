@@ -6,10 +6,12 @@ const connectToMongoDb = require('./dbConnection/connect');
 const product = require('./routes/productRoute');
 const customer = require('./routes/customersRoute');
 const orders = require("./routes/orderRoute");
+const cookieParser = require('cookie-parser');
 
 // middleawre
 app.use(cors());
 app.use(express.json({limit:'50mb'}));
+app.use(cookieParser());
 
 //set route
 app.use('/api/v1/products',product);

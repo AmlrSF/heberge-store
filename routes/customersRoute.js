@@ -2,11 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 const {
-    PostCostmers
+    loginCustomer,
+    registerCustomer,
+    getProfile
 } = require('../controllers/customersCrud');
 
-router.route('/')
-    .post(PostCostmers)
+const { authenticate } = require('../auth/index')
 
+router.route('/register')
+    .post(registerCustomer)
+
+    
+router.route('/login')
+    .post(loginCustomer)
+
+router.route('/profile')
+        .get(authenticate, getProfile);
 
 module.exports = router

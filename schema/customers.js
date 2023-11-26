@@ -11,6 +11,9 @@ const customerSchema = new mongoose.Schema({
   registrationDate: { type: Date, default: Date.now() },
 });
 
+
+
+
 const Customer = mongoose.model('Customer', customerSchema);
 
 module.exports = Customer;
