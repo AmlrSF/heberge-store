@@ -25,11 +25,13 @@ const registerCustomer = async (req, res) => {
         password,
     } = req.body;
 
+    console.log(req.body);
+
     try {
         // Check if the email is already registered
         const existingCustomer = await Customer.findOne({ email });
         if (existingCustomer) {
-            return res.status(400).json({ error: 'Email already in use' });
+            return res.status(201).json({success: false,  error: 'Email already in use' });
         }
 
         // Upload the image to Cloudinary
@@ -50,7 +52,7 @@ const registerCustomer = async (req, res) => {
         });
 
         const savedCustomer = await newCustomer.save();
-        res.status(201).json(savedCustomer);
+        res.status(201).json({success:true, savedCustomer});
     } catch (error) {
         console.error('Error during customer registration:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -65,14 +67,14 @@ const loginCustomer = async (req, res) => {
         const customer = await Customer.findOne({ email });
 
         if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            return res.status(200).json({success:false,  error: 'Customer not found' });
         }
 
         // Compare the entered password with the hashed password in the database
         const passwordMatch = await bcrypt.compare(password, customer.passwordHash);
 
         if (!passwordMatch) {
-            return res.status(401).json({ error: 'Invalid password' });
+            return res.status(200).json({success:false, error: 'Invalid password' });
         }
 
         // Perform additional logic for the first login to set the username

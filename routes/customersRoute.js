@@ -17,6 +17,6 @@ router.route('/login')
     .post(loginCustomer)
 
 router.route('/profile')
-        .get(authenticate, getProfile);
+        .post(authenticate, getProfile);
 
 module.exports = router

@@ -2,8 +2,11 @@
 require('dotenv').config()
 
 const authenticate = (req, res, next) => {
+
     // Get the token from the cookie
-    const token = req.cookies.token;
+    const token = req.body.token;
+
+    console.log(req.body);
 
     // Check if the token is present
     if (!token) {
