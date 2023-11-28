@@ -17,7 +17,7 @@ const getAllProducts = async (req, res) => {
     // Fetch all products from the database
     const products = await Product.find();
     
-    console.log(products);
+    // console.log(products);
     res.status(200).json({ success: true, data: products });
   } catch (error) {
     console.error(error);

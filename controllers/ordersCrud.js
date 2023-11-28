@@ -5,17 +5,17 @@ const Product = require('../schema/product'); // Import the Product model
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
-      .populate({
-        path: 'customer',
-        model: Customer,
-        select: 'firstName lastName email profileImage',
-      })
-      .populate({
-        path: 'products.product', 
-        model: Product,
-        select: 'name price quantity', 
-      });
+    const orders = await Order.find({})
+    .populate({
+      path: 'customer',
+      model: Customer,
+      select: 'firstName lastName email profileImage',
+    })
+    .populate({
+      path: 'products.product',
+      model: Product,
+      select: 'name price quantity image',
+    });
 
     res.json({ success: true, orders });
   } catch (err) {

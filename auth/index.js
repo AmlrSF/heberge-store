@@ -1,4 +1,4 @@
-
+const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 const authenticate = (req, res, next) => {
@@ -6,7 +6,7 @@ const authenticate = (req, res, next) => {
     // Get the token from the cookie
     const token = req.body.token;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     // Check if the token is present
     if (!token) {

@@ -94,7 +94,7 @@ const loginCustomer = async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true, // Make the cookie accessible only via HTTP(S) and not JavaScript
-            // Other optional configurations (e.g., secure, sameSite) based on your requirements
+            // Other optiona configurations (e.g., secure, sameSite) based on your requirements
         });
 
         res.status(200).json({ message: 'Login successful', token, customer });
@@ -118,7 +118,7 @@ const getProfile = async (req, res) => {
         }
 
         // Send the customer's profile information
-        res.status(200).json({ profile: customer });
+        res.status(200).json({success:true, customer });
     } catch (error) {
         console.error('Error fetching profile:', error);
         res.status(500).json({ error: 'Internal server error' });
