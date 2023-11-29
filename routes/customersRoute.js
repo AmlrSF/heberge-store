@@ -4,7 +4,11 @@ const router = express.Router();
 const {
     loginCustomer,
     registerCustomer,
-    getProfile
+    getProfile,
+    updateCustomer,
+    deleteCustomerById,
+    getAllCustomers,
+    getCustomerById
 } = require('../controllers/customersCrud');
 
 const { authenticate } = require('../auth/index')
@@ -19,4 +23,11 @@ router.route('/login')
 router.route('/profile')
         .post(authenticate, getProfile);
 
+router.route('/:id')
+        .put(updateCustomer)
+        .get(getCustomerById)
+        .delete(deleteCustomerById)
+
+router.route('')
+    .get(getAllCustomers);
 module.exports = router

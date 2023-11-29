@@ -10,7 +10,7 @@ const authenticate = (req, res, next) => {
 
     // Check if the token is present
     if (!token) {
-        return res.status(401).json({ error: 'Unauthorized - No token provided' });
+        return res.status(201).json({success:false, error: 'Unauthorized - No token provided' });
     }
 
     try {
@@ -24,7 +24,7 @@ const authenticate = (req, res, next) => {
         next();
     } catch (error) {
         console.error('Error verifying token:', error);
-        return res.status(401).json({ error: 'Unauthorized - Invalid token' });
+        return res.status(200).json({success:false, error: 'Unauthorized - Invalid token' });
     }
 };
 

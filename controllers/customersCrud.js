@@ -114,7 +114,7 @@ const getProfile = async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            return res.status(404).json({success:false, error: 'Customer not found' });
         }
 
         // Send the customer's profile information
@@ -126,10 +126,121 @@ const getProfile = async (req, res) => {
 };
 
 
+const updateCustomer = async (req, res) => {
+    const customerId = req.params.id; // Assuming you pass the customer ID in the request parameters
+    const {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        profileImage,
+        bio,
+        password,
+    } = req.body;
 
+    try {
+        // Check if the customer exists
+        const existingCustomer = await Customer.findById(customerId);
+        if (!existingCustomer) {
+            return res.status(404).json({ success: false, error: 'Customer not found' });
+        }
+
+        // If the email is being updated, check if the new email is already in use
+        if (email && email !== existingCustomer.email) {
+            const emailInUse = await Customer.findOne({ email });
+            if (emailInUse) {
+                return res.status(400).json({ success: false, error: 'Email already in use' });
+            }
+        }
+
+        // If a new profile image is provided, upload it to Cloudinary
+        let updatedProfileImage = existingCustomer.profileImage;
+        if (profileImage) {
+            const photoUrl = await cloudinary.uploader.upload(profileImage);
+            updatedProfileImage = photoUrl.url;
+        }
+
+        // If a new password is provided, generate a new hash
+        let updatedPasswordHash = existingCustomer.passwordHash;
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            updatedPasswordHash = await bcrypt.hash(password, salt);
+        }
+
+        // Update customer fields
+        existingCustomer.firstName = firstName || existingCustomer.firstName;
+        existingCustomer.lastName = lastName || existingCustomer.lastName;
+        existingCustomer.email = email || existingCustomer.email;
+        existingCustomer.phoneNumber = phoneNumber || existingCustomer.phoneNumber;
+        existingCustomer.profileImage = updatedProfileImage;
+        existingCustomer.bio = bio || existingCustomer.bio;
+        existingCustomer.passwordHash = updatedPasswordHash;
+
+        // Save the updated customer
+        const updatedCustomer = await existingCustomer.save();
+
+        res.status(200).json({ success: true, updatedCustomer });
+    } catch (error) {
+        console.error('Error during customer update:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+};
+
+const deleteCustomerById = async (req, res) => {
+    const customerId = req.params.id; // Assuming you pass the customer ID in the request parameters
+
+    try {
+        // Check if the customer exists
+        const existingCustomer = await Customer.findById(customerId);
+        if (!existingCustomer) {
+            return res.status(404).json({ success: false, error: 'Customer not found' });
+        }
+
+        // Delete the customer
+        await existingCustomer.remove();
+
+        res.status(200).json({ success: true, message: 'Customer deleted successfully' });
+    } catch (error) {
+        console.error('Error during customer deletion:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+};
+
+const getAllCustomers = async (req, res) => {
+    try {
+        // Fetch all customers from the database
+        const customers = await Customer.find();
+
+        res.status(200).json({ success: true, customers });
+    } catch (error) {
+        console.error('Error fetching customers:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+};
+const getCustomerById = async (req, res) => {
+    const customerId = req.params.id; // Assuming you pass the customer ID in the request parameters
+
+    try {
+        // Fetch the customer from the database by ID
+        const customer = await Customer.findById(customerId);
+
+        if (!customer) {
+            return res.status(404).json({ success: false, error: 'Customer not found' });
+        }
+
+        res.status(200).json({ success: true, customer });
+    } catch (error) {
+        console.error('Error fetching customer by ID:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+};
 module.exports = {
     loginCustomer,
     registerCustomer,
-    getProfile
+    getProfile,
+    updateCustomer,
+    deleteCustomerById,
+    getAllCustomers,
+    getCustomerById
 } 
   
