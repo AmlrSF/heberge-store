@@ -14,7 +14,10 @@ const billboardSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-  },
+  },addedDate: {
+    type: Date, 
+    default: Date.now, 
+  }
 });
 
 // Create a Billboard model based on the schema
