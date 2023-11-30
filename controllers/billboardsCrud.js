@@ -1,9 +1,29 @@
+require('dotenv').config()
+const cloudinary = require('cloudinary').v2;
 const Billboard = require('../schema/billboards');
+// Configuration 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
 
 // Create a new billboard
 const createBillboard = async (req, res) => {
+  let {
+    image,
+    header,
+    description
+  } = req.body;
+
+  const photoUrl = await cloudinary.uploader.upload(image);
+
   try {
-    const newBillboard = await Billboard.create(req.body);
+    const newBillboard = await Billboard.create({
+      image : photoUrl.url,
+      header,
+      description
+    });
     res.status(201).json(newBillboard);
   } catch (error) {
     console.error(error);
@@ -42,6 +62,12 @@ const getBillboardById = async (req, res) => {
 const updateBillboardById = async (req, res) => {
   const billboardId = req.params.id;
   try {
+
+    if(req.body.image){
+      const photoUrl = await cloudinary.uploader.upload(req.body.image);
+      req.body.image = photoUrl.url;
+    }
+
     const updatedBillboard = await Billboard.findByIdAndUpdate(billboardId, req.body, { new: true });
     if (updatedBillboard) {
       res.json(updatedBillboard);
