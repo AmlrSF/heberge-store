@@ -2,6 +2,8 @@ require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 
 const Customer = require("../schema/customers");
+const Order = require('../schema/orders');
+
 const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
@@ -187,7 +189,7 @@ const updateCustomer = async (req, res) => {
 };
 
 const deleteCustomerById = async (req, res) => {
-    const customerId = req.params.id; // Assuming you pass the customer ID in the request parameters
+    const customerId = req.params.id;
 
     try {
         // Check if the customer exists
@@ -196,10 +198,13 @@ const deleteCustomerById = async (req, res) => {
             return res.status(404).json({ success: false, error: 'Customer not found' });
         }
 
-        // Delete the customer
-        await existingCustomer.remove();
+        // Delete all orders associated with the customer
+        await Order.deleteMany({ customer: customerId });
 
-        res.status(200).json({ success: true, message: 'Customer deleted successfully' });
+        // Delete the customer
+        await Customer.findByIdAndDelete(customerId);
+
+        res.status(200).json({ success: true, message: 'Customer and associated orders deleted successfully' });
     } catch (error) {
         console.error('Error during customer deletion:', error);
         res.status(500).json({ success: false, error: 'Internal server error' });
