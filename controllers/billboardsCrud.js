@@ -34,7 +34,7 @@ const createBillboard = async (req, res) => {
 // Get all billboards
 const getAllBillboards = async (req, res) => {
   try {
-    const allBillboards = await Billboard.find();
+    const allBillboards = await Billboard.find({});
     res.json(allBillboards);
   } catch (error) {
     console.error(error);
