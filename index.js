@@ -26,7 +26,7 @@ app.use('/api/v1/orders',orders);
 
 app.use("/api/v1/billboards",billboards);
 
-app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/categories', catgegories);
 
 app.use('/api/v1/tags', tags);
 //get orders

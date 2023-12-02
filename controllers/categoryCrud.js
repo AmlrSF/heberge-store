@@ -1,4 +1,14 @@
+
+require('dotenv').config()
+const cloudinary = require('cloudinary').v2;
+
 const Category = require("../schema/category");
+// Configuration 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
 
 const getAllCategories = async (req, res) => {
   try {
@@ -11,12 +21,18 @@ const getAllCategories = async (req, res) => {
 };
 
 const createCategory = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description,image } = req.body;
   try {
+    const photoUrl = await cloudinary.uploader.upload(image);
+
     const newCategory = await Category.create({
       name,
-      description
+      description,
+      image:photoUrl.url
     });
+
+    
+
     res.status(201).json(newCategory);
   } catch (error) {
     console.error(error);
@@ -52,6 +68,12 @@ const getCategoryById = async (req, res) => {
 const updateCategoryById = async (req, res) => {
   const categoryId = req.params.id;
   try {
+
+    if(req.body.image){
+      const photoUrl = await cloudinary.uploader.upload(req.body.image);
+      req.body.image = photoUrl.url;
+    }
+
     const updatedCategory = await Category.findByIdAndUpdate(categoryId, req.body, { new: true });
     if (updatedCategory) {
       res.json(updatedCategory);

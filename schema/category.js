@@ -8,6 +8,9 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String
   },
+  image: {
+    type: String // Assuming you store the image URL as a string
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -17,3 +20,4 @@ const categorySchema = new mongoose.Schema({
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;
+
