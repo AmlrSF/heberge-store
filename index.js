@@ -8,6 +8,7 @@ const customer = require('./routes/customersRoute');
 const orders = require("./routes/orderRoute");
 const billboards = require("./routes/billboardRoute");
 const catgegories = require("./routes/categoryRoute");
+const tags = require('./routes/tagRoute');
 
 const cookieParser = require('cookie-parser');
 
@@ -26,6 +27,8 @@ app.use('/api/v1/orders',orders);
 app.use("/api/v1/billboards",billboards);
 
 app.use('/api/v1/categories', categoryRoutes);
+
+app.use('/api/v1/tags', tags);
 //get orders
 
 const runServerApplication = async()=>{
