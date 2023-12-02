@@ -7,6 +7,8 @@ const product = require('./routes/productRoute');
 const customer = require('./routes/customersRoute');
 const orders = require("./routes/orderRoute");
 const billboards = require("./routes/billboardRoute");
+const catgegories = require("./routes/categoryRoute");
+
 const cookieParser = require('cookie-parser');
 
 // middleawre
@@ -23,6 +25,7 @@ app.use('/api/v1/orders',orders);
 
 app.use("/api/v1/billboards",billboards);
 
+app.use('/api/v1/categories', categoryRoutes);
 //get orders
 
 const runServerApplication = async()=>{
