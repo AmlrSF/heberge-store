@@ -1,6 +1,7 @@
 require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 
+const Comment = require('../schema/comment');
 const Customer = require("../schema/customers");
 const Order = require('../schema/orders');
 
@@ -200,7 +201,8 @@ const deleteCustomerById = async (req, res) => {
         
         await Order.deleteMany({ customer: customerId });
 
-        
+        await Comment.deleteMany({customerId:customerId});
+
         await Customer.findByIdAndDelete(customerId);
 
         res.status(200).json({ success: true, message: 'Customer and associated orders deleted successfully' });

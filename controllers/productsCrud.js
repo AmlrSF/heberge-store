@@ -3,7 +3,7 @@ require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 
 const Product = require('../schema/product');
-
+const Comment = require('../schema/comment');
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -68,6 +68,10 @@ const postProduct = async (req, res) => {
       
       const deletedProduct = await Product.findByIdAndDelete(productId);
   
+
+      await Comment.deleteMany({productId:productId});
+
+
       if (!deletedProduct) {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
