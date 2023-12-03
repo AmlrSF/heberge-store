@@ -1,14 +1,15 @@
 require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 const Billboard = require('../schema/billboards');
-// Configuration 
+
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
 });
 
-// Create a new billboard
+
 const createBillboard = async (req, res) => {
   let {
     image,
@@ -31,7 +32,7 @@ const createBillboard = async (req, res) => {
   }
 };
 
-// Get all billboards
+
 const getAllBillboards = async (req, res) => {
   try {
     const allBillboards = await Billboard.find({});
@@ -42,7 +43,7 @@ const getAllBillboards = async (req, res) => {
   }
 };
 
-// Get a specific billboard by ID
+
 const getBillboardById = async (req, res) => {
   const billboardId = req.params.id;
   try {
@@ -58,7 +59,7 @@ const getBillboardById = async (req, res) => {
   }
 };
 
-// Update a billboard by ID
+
 const updateBillboardById = async (req, res) => {
   const billboardId = req.params.id;
   try {
@@ -80,7 +81,7 @@ const updateBillboardById = async (req, res) => {
   }
 };
 
-// Delete a billboard by ID
+
 const deleteBillboardById = async (req, res) => {
   const billboardId = req.params.id;
   try {
@@ -106,7 +107,7 @@ const deleteAllBillboards = async (req, res) => {
   }
 };
 
-// CRUD routes
+
 module.exports = {
     deleteBillboardById,
     createBillboard,
