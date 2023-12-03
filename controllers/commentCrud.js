@@ -1,4 +1,6 @@
 const Comment = require('../schema/comment');
+const Customer = require('../schema/customers'); // Import the Customer model
+const Product = require('../schema/product'); // Import the Product model
 
 // Create a new comment
 const postComment = async (req, res) => {
@@ -17,23 +19,92 @@ const postComment = async (req, res) => {
   }
 };
 
-// Assuming Comment schema has product and customer fields as references
 const getComments = async (req, res) => {
-    try {
-      const allComments = await Comment.find().populate('product customer');
-      res.json(allComments);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+  try {
+    const allComments = await Comment.find({})
+      .populate({
+        path: 'customerId',
+        model: Customer,
+        select: 'firstName lastName profileImage',
+      })
+      .populate({
+        path: 'productId',
+        model: Product,
+        select: 'name',
+      });
+
+    res.json(allComments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
+
+const getCommentsByProduct = async (req, res) => {
+  const productId = req.params.id;
+
+  try {
+    const commentsByCustomer = await Comment.find({ productId })
+    .populate({
+      path: 'customerId',
+      model: Customer,
+      select: 'firstName lastName profileImage',
+    })
+    .populate({
+      path: 'productId',
+      model: Product,
+      select: 'name',
+    });
+
+    res.json(commentsByCustomer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getCommentsById = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const commentsByCustomer = await Comment.find({ _id:id })
+    .populate({
+      path: 'customerId',
+      model: Customer,
+      select: 'firstName lastName profileImage',
+    })
+    .populate({
+      path: 'productId',
+      model: Product,
+      select: 'name',
+    });
+
+    res.json(commentsByCustomer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 // Get comments by customer
 const getCommentsByCustomer = async (req, res) => {
   const customerId = req.params.id;
 
   try {
-    const commentsByCustomer = await Comment.find({ customerId });
+    const commentsByCustomer = await Comment.find({ customerId })
+    .populate({
+      path: 'customerId',
+      model: Customer,
+      select: 'firstName lastName profileImage',
+    })
+    .populate({
+      path: 'productId',
+      model: Product,
+      select: 'name',
+    });
+
     res.json(commentsByCustomer);
   } catch (error) {
     console.error(error);
@@ -90,5 +161,7 @@ module.exports = {
   getCommentsByCustomer,
   deleteAllComments,
   deleteCommentById,
-  updateCommentById
+  updateCommentById,
+  getCommentsByProduct,
+  getCommentsById
 };

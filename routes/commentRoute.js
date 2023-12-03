@@ -6,7 +6,9 @@ const {
   getCommentsByCustomer,
   deleteAllComments,
   deleteCommentById,
-  updateCommentById
+  updateCommentById,
+  getCommentsByProduct,
+  getCommentsById
 } = require('../controllers/commentCrud');
 
 
@@ -16,8 +18,12 @@ router.route('/')
   .delete(deleteAllComments);
 
 router.route('/:id')
-  .get(getCommentsByCustomer)
+  .get(getCommentsById)
   .delete(deleteCommentById)
-  .put(updateCommentById);
+  .put(updateCommentById)
+
+router.route('/product/:id').get(getCommentsByProduct);
+router.route('/costumer/:id').get(getCommentsByCustomer);
+
 
 module.exports = router;
