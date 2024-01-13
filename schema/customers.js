@@ -8,9 +8,12 @@ const customerSchema = new mongoose.Schema({
   profileImage: String, 
   passwordHash: String, 
   bio: String,
+  role: {
+    type: Number,
+    default: 0
+  },
   registrationDate: { type: Date, default: Date.now() },
 });
-
 
 
 

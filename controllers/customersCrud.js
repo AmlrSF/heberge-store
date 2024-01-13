@@ -1,9 +1,8 @@
 require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 
-const Comment = require('../schema/comment');
+
 const Customer = require("../schema/customers");
-const Order = require('../schema/orders');
 
 const bcrypt = require('bcrypt');
 
@@ -16,51 +15,46 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 });
 
-
 const registerCustomer = async (req, res) => {
     const {
-        firstName,
-        lastName,
+        fname,
+        lname,
         email,
-        phoneNumber,
-        profileImage,
-        bio,
         password,
     } = req.body;
 
     console.log(req.body);
 
     try {
-       
+        // Check if the email is already in use
         const existingCustomer = await Customer.findOne({ email });
         if (existingCustomer) {
-            return res.status(201).json({success: false,  error: 'Email already in use' });
+            return res.status(201).json({ success: false, error: 'Email already in use' });
         }
 
-        
-        const photoUrl = await cloudinary.uploader.upload(profileImage);
-
-       
+        // Generate a salt
         const salt = await bcrypt.genSalt(10);
+
+        // Hash the password using the generated salt
         const hash = await bcrypt.hash(password, salt);
 
+        // Create a new customer with the hashed password
         const newCustomer = new Customer({
-            firstName,
-            lastName,
+            firstName: fname,
+            lastName: lname,
             email,
-            phoneNumber,
-            profileImage: photoUrl.url,
-            bio,
             passwordHash: hash,
         });
 
+        // Save the new customer to the database
         const savedCustomer = await newCustomer.save();
-        res.status(201).json({success:true, savedCustomer});
+        res.status(201).json({ success: true, savedCustomer });
     } catch (error) {
         console.error('Error during customer registration:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 const loginCustomer = async (req, res) => {
@@ -199,10 +193,7 @@ const deleteCustomerById = async (req, res) => {
         }
 
         
-        await Order.deleteMany({ customer: customerId });
-
-        await Comment.deleteMany({customerId:customerId});
-
+    
         await Customer.findByIdAndDelete(customerId);
 
         res.status(200).json({ success: true, message: 'Customer and associated orders deleted successfully' });

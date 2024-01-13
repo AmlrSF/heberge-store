@@ -5,11 +5,7 @@ const connectToMongoDb = require('./dbConnection/connect');
 
 const product = require('./routes/productRoute');
 const customer = require('./routes/customersRoute');
-const orders = require("./routes/orderRoute");
-const billboards = require("./routes/billboardRoute");
-const catgegories = require("./routes/categoryRoute");
-const tags = require('./routes/tagRoute');
-const comment = require('./routes/commentRoute');
+
 
 const cookieParser = require('cookie-parser');
 
@@ -23,15 +19,7 @@ app.use('/api/v1/products',product);
 
 app.use('/api/v1/customers',customer);
 
-app.use('/api/v1/orders',orders);
 
-app.use("/api/v1/billboards",billboards);
-
-app.use('/api/v1/categories', catgegories);
-
-app.use('/api/v1/tags', tags);
-
-app.use('/api/v1/comments', comment);
 //get orders
 
 const runServerApplication = async()=>{

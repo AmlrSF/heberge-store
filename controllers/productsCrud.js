@@ -3,7 +3,7 @@ require('dotenv').config()
 const cloudinary = require('cloudinary').v2;
 
 const Product = require('../schema/product');
-const Comment = require('../schema/comment');
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -23,6 +23,7 @@ const getAllProducts = async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: 'Unable to fetch products, please try again' });
   }
+  
 };
 
 
