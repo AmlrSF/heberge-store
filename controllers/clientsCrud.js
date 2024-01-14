@@ -10,7 +10,7 @@ const Client = require('../schema/Clients');
 const getAllClients = async (req, res) => {
     try {
         const clients = await Client.find();
-        res.json(clients);
+        res.json({success:true, clients});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -19,10 +19,11 @@ const getAllClients = async (req, res) => {
 
 
 const postClient = async (req, res) => {
+    console.log(req.body);
     try {
         const newClient = new Client(req.body);
         const savedClient = await newClient.save();
-        res.json(savedClient);
+        res.json({success:true, savedClient});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -31,8 +32,9 @@ const postClient = async (req, res) => {
 
 
 const deleteSingleClient = async (req, res) => {
+    console.log(req.params.id);
     try {
-        const deletedClient = await Client.findByIdAndDelete(req.params.clientId);
+        const deletedClient = await Client.findByIdAndDelete(req.params.id);
         res.json(deletedClient);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -42,7 +44,7 @@ const deleteSingleClient = async (req, res) => {
 
 const getSingleClient = async (req, res) => {
     try {
-        const client = await Client.findById(req.params.clientId);
+        const client = await Client.findById(req.params.id);
         res.json(client);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -62,8 +64,9 @@ const deleteAllClients = async (req, res) => {
 
 const updateSingleClient = async (req, res) => {
     try {
-        const updatedClient = await Client.findByIdAndUpdate(req.params.clientId, req.body, { new: true });
-        res.json(updatedClient);
+        console.log(req.body);
+        const updatedClient = await Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json({success:true, updatedClient});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }

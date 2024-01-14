@@ -5,7 +5,7 @@ const connectToMongoDb = require('./dbConnection/connect');
 
 const product = require('./routes/productRoute');
 const customer = require('./routes/customersRoute');
-
+const client = require('./routes/clientsRoute')
 
 const cookieParser = require('cookie-parser');
 
@@ -19,7 +19,7 @@ app.use('/api/v1/products',product);
 
 app.use('/api/v1/customers',customer);
 
-app.use('/api/v1/clients',customer);
+app.use('/api/v1/clients',client);
 
 //get orders
 
