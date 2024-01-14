@@ -19,6 +19,7 @@ app.use('/api/v1/products',product);
 
 app.use('/api/v1/customers',customer);
 
+app.use('/api/v1/clients',customer);
 
 //get orders
 

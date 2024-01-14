@@ -107,6 +107,8 @@ const getProfile = async (req, res) => {
         const customerId = req.customerId;
 
        
+        console.log(customerId);
+
         const customer = await Customer.findById(customerId);
 
         if (!customer) {

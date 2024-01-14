@@ -4,10 +4,8 @@ const customerSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   email: String,
-  phoneNumber: String,
   profileImage: String, 
   passwordHash: String, 
-  bio: String,
   role: {
     type: Number,
     default: 0
