@@ -15,10 +15,11 @@ cloudinary.config({
 const getAllDomains = async (req, res) => {
   try {
     
-    const Domains = await Domain.find();
-    
-    
-    res.status(200).json({ success: true, data: Domains });
+    const domains = await Domain.find().populate({
+      path: 'client',
+      select: 'name email', // Specify the fields you want to populate
+    });
+    res.status(200).json({ success: true, data: domains });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Unable to fetch Domains, please try again' });
