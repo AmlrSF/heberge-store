@@ -3,7 +3,7 @@ const app = express();
 const cors = require('cors');
 const connectToMongoDb = require('./dbConnection/connect');
 
-const product = require('./routes/productRoute');
+const domain = require('./routes/domainRoute');
 const customer = require('./routes/customersRoute');
 const client = require('./routes/clientsRoute')
 
@@ -15,7 +15,7 @@ app.use(express.json({limit:'50mb'}));
 app.use(cookieParser());
 
 //set route
-app.use('/api/v1/products',product);
+app.use('/api/v1/domains',domain);
 
 app.use('/api/v1/customers',customer);
 
