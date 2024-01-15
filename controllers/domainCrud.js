@@ -57,9 +57,6 @@ const postDomain = async (req, res) => {
       const deletedDomain = await Domain.findByIdAndDelete(DomainId);
   
 
-      await Comment.deleteMany({DomainId:DomainId});
-
-
       if (!deletedDomain) {
         return res.status(404).json({ success: false, message: 'Domain not found' });
       }
@@ -77,17 +74,22 @@ const postDomain = async (req, res) => {
       const DomainId = req.params.id; 
   
       
-      const Domain = await Domain.findById(DomainId);
+      const SingleDomain = await Domain.findById(DomainId)
+      .populate({
+        path: 'client',
+        select: 'name email', // Specify the fields you want to populate
+      });
   
-      if (!Domain) {
+      if (!SingleDomain) {
         return res.status(404).json({ success: false, message: 'Domain not found' });
       }
   
-      res.status(200).json({ success: true, data: Domain });
+      res.status(200).json({ success: true, data: SingleDomain });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: 'Unable to retrieve the Domain, please try again' });
     }
+    
   }
   
   
