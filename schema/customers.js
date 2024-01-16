@@ -5,6 +5,8 @@ const customerSchema = new mongoose.Schema({
   lastName: String,
   email: String,
   profileImage: String, 
+  phoneNumber:String,
+  bio:String,
   passwordHash: String, 
   role: {
     type: Number,

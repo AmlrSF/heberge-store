@@ -8,7 +8,8 @@ const {
     updateCustomer,
     deleteCustomerById,
     getAllCustomers,
-    getCustomerById
+    getCustomerById,
+    updateCustomerPass
 } = require('../controllers/customersCrud');
 
 const { authenticate } = require('../auth/index')
@@ -16,17 +17,20 @@ const { authenticate } = require('../auth/index')
 router.route('/register')
     .post(registerCustomer)
 
-    
+
 router.route('/login')
     .post(loginCustomer)
 
 router.route('/profile')
-        .post(authenticate, getProfile);
+    .post(authenticate, getProfile);
 
 router.route('/:id')
-        .put(updateCustomer)
-        .get(getCustomerById)
-        .delete(deleteCustomerById)
+    .put(updateCustomer)
+    .get(getCustomerById)
+    .delete(deleteCustomerById)
+
+router.route('/changePass/:id')
+    .put(updateCustomerPass)
 
 router.route('')
     .get(getAllCustomers);

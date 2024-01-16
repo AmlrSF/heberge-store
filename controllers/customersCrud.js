@@ -133,8 +133,10 @@ const updateCustomer = async (req, res) => {
         phoneNumber,
         profileImage,
         bio,
-        password,
     } = req.body;
+
+
+    //console.log(req.body);
 
     try {
         
@@ -151,7 +153,7 @@ const updateCustomer = async (req, res) => {
             }
         }
 
-        
+        let image = ""
         let updatedProfileImage = existingCustomer.profileImage;
         if (profileImage) {
             const photoUrl = await cloudinary.uploader.upload(profileImage);
@@ -159,23 +161,25 @@ const updateCustomer = async (req, res) => {
         }
 
        
-        let updatedPasswordHash = existingCustomer.passwordHash;
-        if (password) {
-            const salt = await bcrypt.genSalt(10);
-            updatedPasswordHash = await bcrypt.hash(password, salt);
-        }
+        // let updatedPasswordHash = existingCustomer.passwordHash;
+        // if (password) {
+        //     const salt = await bcrypt.genSalt(10);
+        //     updatedPasswordHash = await bcrypt.hash(password, salt);
+        // }
 
-        
-        existingCustomer.firstName = firstName || existingCustomer.firstName;
-        existingCustomer.lastName = lastName || existingCustomer.lastName;
-        existingCustomer.email = email || existingCustomer.email;
-        existingCustomer.phoneNumber = phoneNumber || existingCustomer.phoneNumber;
-        existingCustomer.profileImage = updatedProfileImage;
-        existingCustomer.bio = bio || existingCustomer.bio;
-        existingCustomer.passwordHash = updatedPasswordHash;
-
-        
-        const updatedCustomer = await existingCustomer.save();
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            req.params.id,
+            {
+              firstName,
+              lastName,
+              email,
+              phoneNumber,
+              profileImage: updatedProfileImage, // Use the updated profileImage here
+              bio,
+            },
+            { new: true }
+          );
+          
 
         res.status(200).json({ success: true, updatedCustomer });
     } catch (error) {
@@ -183,6 +187,40 @@ const updateCustomer = async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 };
+
+
+const updateCustomerPass = async (req, res) => {
+    const customerId = req.params.id;
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        const existingCustomer = await Customer.findById(customerId);
+
+        if (!existingCustomer) {
+            return res.status(200).json({ success: false, error: 'Customer not found' });
+        }
+
+        const passwordMatch = await bcrypt.compare(oldPassword, existingCustomer.passwordHash);
+
+        if (!passwordMatch) {
+            return res.status(200).json({ success: false, error: 'Old password is incorrect' });
+        }
+
+        if (newPassword) {
+            const salt = await bcrypt.genSalt(10);
+            const updatedPasswordHash = await bcrypt.hash(newPassword, salt);
+            existingCustomer.passwordHash = updatedPasswordHash;
+        }
+
+        const updatedCustomer = await existingCustomer.save();
+
+        res.status(200).json({ success: true, updatedCustomer });
+    } catch (error) {
+        console.error('Error during customer password update:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+};
+
 
 const deleteCustomerById = async (req, res) => {
     const customerId = req.params.id;
@@ -240,6 +278,7 @@ module.exports = {
     updateCustomer,
     deleteCustomerById,
     getAllCustomers,
-    getCustomerById
+    getCustomerById,
+    updateCustomerPass
 } 
   
