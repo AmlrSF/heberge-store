@@ -6,7 +6,7 @@ const connectToMongoDb = require('./dbConnection/connect');
 const domain = require('./routes/domainRoute');
 const customer = require('./routes/customersRoute');
 const client = require('./routes/clientsRoute')
-
+const mail = require("./routes/mailRoute");
 const cookieParser = require('cookie-parser');
 
 // middleawre
@@ -20,6 +20,8 @@ app.use('/api/v1/domains',domain);
 app.use('/api/v1/customers',customer);
 
 app.use('/api/v1/clients',client);
+
+app.use('',mail);
 
 //get orders
 
