@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connectToMongoDb = require('./dbConnection/connect');
-
+const cron = require('node-cron');
 const domain = require('./routes/domainRoute');
 const customer = require('./routes/customersRoute');
 const client = require('./routes/clientsRoute')
 const mail = require("./routes/mailRoute");
 const cookieParser = require('cookie-parser');
-
+const { checkDomainsAndSendEmails } =  require('./controllers/sendEmail')
 // middleawre
 app.use(cors());
 app.use(express.json({limit:'50mb'}));
@@ -21,9 +21,13 @@ app.use('/api/v1/customers',customer);
 
 app.use('/api/v1/clients',client);
 
-app.use('',mail);
+// app.use('/api/v1/',mail);
 
-//get orders
+cron.schedule('0 0 * * *', () => {
+    checkDomainsAndSendEmails();
+});
+
+
 
 const runServerApplication = async()=>{
     try {
