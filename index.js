@@ -10,7 +10,7 @@ const mail = require("./routes/mailRoute");
 const cookieParser = require('cookie-parser');
 const Db = require("./routes/DbRoute");
 const Ftp = require("./routes/ftpRoute");
-
+const Cms = require("./routes/cmsRoute");
 const { checkDomainsAndSendEmails } = require('./controllers/sendEmail')
 // middleawre
 app.use(cors());
@@ -30,6 +30,7 @@ app.use('/api/v1', Db);
 app.use('/api/v1', Ftp);
 
 
+app.use('/api/v1', Cms);
 
 // app.use('/api/v1/',mail);
 cron.schedule('0 0 * * *', () => {
