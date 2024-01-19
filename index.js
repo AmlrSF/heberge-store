@@ -39,6 +39,8 @@ cron.schedule('0 0 * * *', () => {
 
 
 
+
+
 const runServerApplication = async () => {
     try {
         await connectToMongoDb(process.env.MONGO_URL_KEY);
