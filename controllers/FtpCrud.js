@@ -59,7 +59,7 @@ const deleteAllFTPs = async (req, res) => {
 const getSingleFtpBaseDomain = async(req,res)=>{
   try {
     const ftp = await FTP.find({domain : req.params.id});
-    res.json(ftp);
+    res.json({success:true, data:ftp});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

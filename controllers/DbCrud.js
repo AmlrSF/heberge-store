@@ -59,8 +59,8 @@ const deleteAllDBs = async (req, res) => {
 
 const getSingledbBaseDomain = async(req,res)=>{
   try {
-    await DB.find({ domain : req.params.id});
-    res.json({ message: 'DB deleted successfully' });
+    let result = await DB.find({ domain : req.params.id});
+    res.json({ success:true, data : result } );
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
