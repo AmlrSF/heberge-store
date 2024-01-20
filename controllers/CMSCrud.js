@@ -33,7 +33,7 @@ const postCMS = async (req, res) => {
   try {
     const newCMS = new CMS(cmsData);
     const savedCMS = await newCMS.save();
-    res.status(201).json({ success: true, data: savedCMS });
+    res.status(201).json({ success: true, cms: savedCMS });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
