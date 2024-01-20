@@ -57,6 +57,15 @@ const deleteAllDBs = async (req, res) => {
   }
 };
 
+const getSingledbBaseDomain = async(req,res)=>{
+  try {
+    await DB.findByIdAndDelete({ domain : req.params.id});
+    res.json({ message: 'DB deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   getAllDBs,
   getSingleDB,
@@ -64,4 +73,5 @@ module.exports = {
   updateSingleDB,
   deleteSingleDB,
   deleteAllDBs,
+  getSingledbBaseDomain
 };

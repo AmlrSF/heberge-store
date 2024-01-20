@@ -7,7 +7,8 @@ const {
   deleteSingleDB,
   getSingleDB,
   updateSingleDB,
-  deleteAllDBs
+  deleteAllDBs,
+  getSingledbBaseDomain
 } = require('../controllers/DbCrud');
 
 
@@ -28,4 +29,6 @@ router.route('/dbs/:id')
   .put(updateSingleDB)
   .delete(deleteSingleDB);
 
+router.route('/dbs/db/:id')
+  .get(getSingledbBaseDomain)
 module.exports = router;

@@ -7,7 +7,8 @@ const {
   deleteSingleCMS,
   getSingleCMS,
   updateSingleCMS,
-  deleteAllCMSs
+  deleteAllCMSs,
+  getSingleCMSbaseOndomains
 } = require('../controllers/CMSCrud');
 
 
@@ -25,6 +26,10 @@ router.route('/CMSs/:id')
   .get(getSingleCMS)
   .put(updateSingleCMS)
   .delete(deleteSingleCMS);
+
+
+router.route('/CMSs/Cms/:id')
+  .get(getSingleCMSbaseOndomains)
 
 
 module.exports = router;

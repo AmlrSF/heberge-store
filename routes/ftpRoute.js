@@ -7,7 +7,8 @@ const {
   deleteSingleFTP,
   getSingleFTP,
   updateSingleFTP,
-  deleteAllFTPs
+  deleteAllFTPs,
+  getSingleFtpBaseDomain
 } = require('../controllers/FtpCrud');
 
 
@@ -26,5 +27,8 @@ router.route('/ftps/:id')
   .put(updateSingleFTP)
   .delete(deleteSingleFTP);
 
+
+  router.route('/ftps/ftp/:id')
+    .get(getSingleFtpBaseDomain)
 
 module.exports = router;
