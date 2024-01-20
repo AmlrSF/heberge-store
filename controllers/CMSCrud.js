@@ -21,7 +21,7 @@ const getSingleCMS = async (req, res) => {
 const getSingleCMSbaseOndomains = async (req, res) => {
   try {
     const cms = await CMS.find({domain:req.params.id});
-    res.json({ success: true, data: cms });
+    res.json({ success: true, cms: cms });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
