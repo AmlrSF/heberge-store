@@ -12,17 +12,23 @@ const Db = require("./routes/DbRoute");
 const Ftp = require("./routes/ftpRoute");
 const Cms = require("./routes/cmsRoute");
 const { checkDomainsAndSendEmails } = require('./controllers/sendEmail')
+
+
 // middleawre
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
+
 //set route
 app.use('/api/v1/domains', domain);
 
+
 app.use('/api/v1/customers', customer);
 
+
 app.use('/api/v1/clients', client);
+
 
 app.use('/api/v1', Db);
 
@@ -32,12 +38,12 @@ app.use('/api/v1', Ftp);
 
 app.use('/api/v1', Cms);
 
+
+
 // app.use('/api/v1/',mail);
 cron.schedule('0 0 * * *', () => {
     checkDomainsAndSendEmails();
 });
-
-
 
 
 
