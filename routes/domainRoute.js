@@ -7,7 +7,8 @@ const {
     deleteSingleDomain,
     getSingleDomain,
     updateSingleDomain,
-    deleteAllDomains
+    deleteAllDomains,
+    getAllDomainsBaseOnClient
 } = require('../controllers/domainCrud');
 
 router.route('/')
@@ -19,6 +20,9 @@ router.route('/Domain/:id')
     .delete(deleteSingleDomain)
     .get(getSingleDomain)
     .put(updateSingleDomain)
+
+router.route('/Domain/client/:id')
+    .get(getAllDomainsBaseOnClient);
 
 
 module.exports = router
