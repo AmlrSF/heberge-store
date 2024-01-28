@@ -2,7 +2,7 @@
 require('dotenv').config()
 
 const Client = require('../schema/Clients');
-
+const Domain = require('../schema/domains');
 
 
 
@@ -35,6 +35,7 @@ const deleteSingleClient = async (req, res) => {
     console.log(req.params.id);
     try {
         const deletedClient = await Client.findByIdAndDelete(req.params.id);
+        await Domain.deleteMany({client:req.body.id})
         res.json(deletedClient);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
