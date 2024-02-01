@@ -30,6 +30,7 @@ app.use('/api/v1/customers', customer);
 app.use('/api/v1/clients', client);
 
 
+
 app.use('/api/v1', Db);
 
 
@@ -41,7 +42,7 @@ app.use('/api/v1', Cms);
 
 
 // app.use('/api/v1/',mail);
-cron.schedule('0 0 * * *', () => {
+cron.schedule('0 0 */15 * *', () => {
     checkDomainsAndSendEmails();
 });
 
