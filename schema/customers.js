@@ -12,7 +12,13 @@ const customerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  verified:{type:Boolean, default: false},
   registrationDate: { type: Date, default: Date.now() },
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zip: { type: String, required: true },
+  country: { type: String, required: true },
 });
 
 
