@@ -28,9 +28,24 @@ app.use(cookieParser());
 app.use('/api/v1/customers', customer);
 
 
+<<<<<<< HEAD
+=======
+app.use('/api/v1/clients', client);
+
+
+app.use('/api/v1', Db);
+
+
+app.use('/api/v1', Ftp);
+
+
+app.use('/api/v1', Cms);
+
+
+>>>>>>> parent of b2ba328 (get notif evrey 15 days)
 
 // app.use('/api/v1/',mail);
-cron.schedule('0 0 */15 * *', () => {
+cron.schedule('0 0 * * *', () => {
     checkDomainsAndSendEmails();
 });
 
