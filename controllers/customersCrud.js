@@ -123,6 +123,7 @@ const getProfile = async (req, res) => {
     }
 };
 
+
 const updateCustomer = async (req, res) => {
     const customerId = req.params.id; 
     const {
@@ -130,22 +131,21 @@ const updateCustomer = async (req, res) => {
         lastName,
         email,
         phoneNumber,
-        address,
-        city,
-        state,
-        zip,
-        country,
         profileImage,
         bio,
-    
     } = req.body;
 
+
+    //console.log(req.body);
+
     try {
+        
         const existingCustomer = await Customer.findById(customerId);
         if (!existingCustomer) {
             return res.status(404).json({ success: false, error: 'Customer not found' });
         }
 
+        
         if (email && email !== existingCustomer.email) {
             const emailInUse = await Customer.findOne({ email });
             if (emailInUse) {
@@ -153,29 +153,33 @@ const updateCustomer = async (req, res) => {
             }
         }
 
+        let image = ""
         let updatedProfileImage = existingCustomer.profileImage;
         if (profileImage) {
             const photoUrl = await cloudinary.uploader.upload(profileImage);
             updatedProfileImage = photoUrl.url;
         }
 
+       
+        // let updatedPasswordHash = existingCustomer.passwordHash;
+        // if (password) {
+        //     const salt = await bcrypt.genSalt(10);
+        //     updatedPasswordHash = await bcrypt.hash(password, salt);
+        // }
+
         const updatedCustomer = await Customer.findByIdAndUpdate(
-            customerId,
+            req.params.id,
             {
-                firstName,
-                lastName,
-                email,
-                phoneNumber,
-                address,
-                city,
-                state,
-                zip,
-                country,
-                profileImage: updatedProfileImage,
-                bio,
+              firstName,
+              lastName,
+              email,
+              phoneNumber,
+              profileImage: updatedProfileImage, // Use the updated profileImage here
+              bio,
             },
             { new: true }
-        );
+          );
+          
 
         res.status(200).json({ success: true, updatedCustomer });
     } catch (error) {

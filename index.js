@@ -3,18 +3,14 @@ const app = express();
 const cors = require('cors');
 const connectToMongoDb = require('./dbConnection/connect');
 const cron = require('node-cron');
-
-<<<<<<< HEAD
-const customer = require('./routes/customerRoute');
-
-// const mail = require("./routes/mailRoute");
-=======
+const domain = require('./routes/domainRoute');
 const customer = require('./routes/customersRoute');
-
+const client = require('./routes/clientsRoute')
 const mail = require("./routes/mailRoute");
->>>>>>> 5badb87c31d9f3a45c24b787dcc296d41d9e3180
 const cookieParser = require('cookie-parser');
-
+const Db = require("./routes/DbRoute");
+const Ftp = require("./routes/ftpRoute");
+const Cms = require("./routes/cmsRoute");
 const { checkDomainsAndSendEmails } = require('./controllers/sendEmail')
 
 
@@ -24,13 +20,15 @@ app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
 
+//set route
+app.use('/api/v1/domains', domain);
+
 
 app.use('/api/v1/customers', customer);
 
 
-<<<<<<< HEAD
-=======
 app.use('/api/v1/clients', client);
+
 
 
 app.use('/api/v1', Db);
@@ -42,10 +40,9 @@ app.use('/api/v1', Ftp);
 app.use('/api/v1', Cms);
 
 
->>>>>>> parent of b2ba328 (get notif evrey 15 days)
 
 // app.use('/api/v1/',mail);
-cron.schedule('0 0 * * *', () => {
+cron.schedule('0 0 */15 * *', () => {
     checkDomainsAndSendEmails();
 });
 
