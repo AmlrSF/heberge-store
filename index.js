@@ -4,9 +4,15 @@ const cors = require('cors');
 const connectToMongoDb = require('./dbConnection/connect');
 const cron = require('node-cron');
 
+<<<<<<< HEAD
 const customer = require('./routes/customerRoute');
 
 // const mail = require("./routes/mailRoute");
+=======
+const customer = require('./routes/customersRoute');
+
+const mail = require("./routes/mailRoute");
+>>>>>>> 5badb87c31d9f3a45c24b787dcc296d41d9e3180
 const cookieParser = require('cookie-parser');
 
 const { checkDomainsAndSendEmails } = require('./controllers/sendEmail')
